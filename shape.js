@@ -1,15 +1,26 @@
 class Shape {
 
-  shapeInstance;
+  _instance;
   _speed;
+  active = false;
+  sides;
 
   constructor(center, sides, radius, speed) {
-    this.shapeInstance = new Path.RegularPolygon(center, sides, radius);
+    this.sides = sides;
+    this.instance = new Path.RegularPolygon(center, sides, radius);
 
     this.speed = speed;
-    this.shapeInstance.strokeColor = 'black';
-    this.shapeInstance.strokeWidth = 5;
-    this.shapeInstance.setApplyMatrix(false);
+    this.instance.strokeColor = 'black';
+    this.instance.strokeWidth = 5;
+    this.instance.setApplyMatrix(false);
+  }
+
+  get instance() {
+    return this._instance;
+  }
+
+  set instance(instance) {
+    this._instance = instance;
   }
 
   set speed(speed) {
@@ -20,11 +31,15 @@ class Shape {
     return this._speed;
   }
 
-  getPosition() {
-    return this.shapeInstance.getRotation();
+  getRotation() {
+    return this.instance.getRotation();
   }
 
   rotate() {
-    this.shapeInstance.rotate(this.speed);
+    this.instance.rotate(this.speed);
+  }
+
+  setStatus(status) {
+    this.active = status;
   }
 }

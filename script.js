@@ -3,23 +3,21 @@ window.onload = function() {
   paper.setup('myCanvas');
   const tool = new Tool();
 
-  const shape = createShape();
-  view.onFrame = function(event) {
-    const position = shape.getPosition();
+  const game = new Game(3);
+  const shape = game.createShape();
+
+  view.onFrame = function() {
     shape.rotate(shape.speed);
   }
 
-  tool.onMouseDown = function(event) {
-    if (shape.speed > 0) {
+  tool.onMouseDown = function() {
+    if (shape.speed <= 1) {
+      game.checkRotation();
+    }
+    if (shape.speed > 1) {
       shape.speed -= 1;
     }
   }
-}
-
-function createShape() {
-  let sides = Math.floor(random(3, 8));
-  let speed = Math.floor(random(1,12));
-  return new Shape(view.center, sides, 100, speed);
 }
 
 function random(min, max) {
