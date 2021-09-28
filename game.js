@@ -17,21 +17,24 @@ class Game {
 
   constructor(length) {
     this.length = length;
+    this.shape = this.createShape();
   }
 
-  addShapeToCompleted(shape) {
-    shape.setStatus(false);
-    this.completedShapes.push(shape);
+  completeRound() {
+    this.shape.setStatus(false);
+    this.completedShapes.push(this.shape);
     if (this.completedShapes.length === this.length) {
       this.complete = true;
+
+    } else {
+      setTimeout(() => {
+        this.startNextRound();
+      }, 5000);
     }
-    setTimeout(() => {
-      this.startNextRound();
-    }, 10000);
   }
 
   startNextRound() {
-    shape.instance.remove();
+    this.shape.instance.remove();
     this.shape = this.createShape();
   }
 
@@ -56,12 +59,12 @@ class Game {
         this.points += 1;
       }
     }
-    this.addShapeToCompleted(this.shape);
   }
 
   createShape() {
     let speed = Math.floor(random(1,12));
     const sides = this.getSides();
+    this.speed = speed;
     this.shape = new Shape(view.center, sides, 100, speed);
     this.shape.setStatus(true);
     this.calculateRotations(sides);

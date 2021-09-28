@@ -1,24 +1,35 @@
 paper.install(window);
+let game;
+
 window.onload = function() {
   paper.setup('myCanvas');
   const tool = new Tool();
-
-  const game = new Game(3);
-  const shape = game.createShape();
+  game = new Game(3);
 
   view.onFrame = function() {
-    shape.rotate(shape.speed);
+    if (!game.complete) {
+      const shape = game.shape;
+      shape.rotate(shape.speed);
+    }
   }
 
   tool.onMouseDown = function() {
-    if (shape.speed <= 1) {
-      game.checkRotation();
+    if (!game.complete) {
+      const shape = game.shape;
+      if (shape.speed > 0) {
+        shape.speed -= 1;
+      }
+      if (shape.speed === 0) {
+        game.checkRotation();
+        game.completeRound();
+      }
     }
-    if (shape.speed > 1) {
-      shape.speed -= 1;
+    else {
+      console.log('Complete');
     }
   }
 }
+
 
 function random(min, max) {
   // min and max included
