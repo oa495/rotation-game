@@ -1,6 +1,12 @@
 <template>
   <div class="game">
-    <span>{{points}}</span>
+    <section>
+      <span>{{points}}</span>
+      <div class="controls">
+        <button v-on:click="restart()">Restart</button>
+        <button v-on:click="endGame()">End</button>
+      </div>
+    </section>
     <canvas id="myCanvas" v-on:mousedown="mouseDown"></canvas>
   </div>
 </template>
@@ -19,6 +25,7 @@ export default {
       game: null
     }
   },
+  props: ['endGame'],
   computed: {
     points: function() {
       if (!this.game) return;
@@ -26,9 +33,16 @@ export default {
     }
   },
   methods: {
+    restart() {
+      project.activeLayer.removeChildren();
+      this.game = new Game(3);
+    },
+    endGame() {
+      this.$emit('ended');
+    },
     mouseDown() {
       this.tool.onMouseDown = () => {
-        if (!this.game.complete) {
+        if (!this.game.completed) {
           const shape = this.game.shape;
           if (shape.speed > 0) {
             shape.speed -= 1;
@@ -39,7 +53,7 @@ export default {
           }
         }
         else {
-          console.log('Complete');
+          console.log('completed');
         }
       }
     }
@@ -50,7 +64,7 @@ export default {
     this.game = new Game(3);
 
     view.onFrame = () => {
-      if (!this.game.complete) {
+      if (!this.game.completed) {
         const shape = this.game.shape;
         shape.rotate(shape.speed);
       }
@@ -69,5 +83,15 @@ canvas {
   width: 100vw;
   height: 100vh;
   background-color: white;
+}
+
+.game section {
+  z-index: 100;
+  position: absolute;
+  display: flex;
+  width: 98%;
+  justify-content: space-between;
+  top: 0;
+  padding: 1.2em 0.6em;
 }
 </style>

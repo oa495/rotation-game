@@ -1,7 +1,11 @@
-import Shape from '../classes/shape';
+import Shape from './shape';
 
 export default class Game {
-  complete = false;
+  completed = false;
+
+  // If game is ended or completed it becomes not activee
+  active = false;
+
   shape;
   completedShapes = [];
   speed;
@@ -20,13 +24,15 @@ export default class Game {
   constructor(length) {
     this.length = length;
     this.shape = this.createShape();
+    this.active = true;
   }
 
   completeRound() {
     this.shape.setStatus(false);
     this.completedShapes.push(this.shape);
     if (this.completedShapes.length === this.length) {
-      this.complete = true;
+      this.completed = true;
+      this.active = false;
 
     } else {
       setTimeout(() => {

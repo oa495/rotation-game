@@ -1,7 +1,7 @@
 <template>
   <main class="home">
-    <button  v-on:click="startGame()" v-if="!gameStarted" >Start Game </button>
-    <Canvas v-if="gameStarted" />
+    <button v-on:click="startGame()" v-if="!gameStarted">Start Game </button>
+    <Canvas v-if="gameStarted" @ended="endGame" />
   </main>
 </template>
 <script>
@@ -21,6 +21,10 @@ export default {
     startGame() {
       this.gameStarted = true;
     },
+
+    endGame() {
+      this.gameStarted = false;
+    }
   }
 }
 </script>
