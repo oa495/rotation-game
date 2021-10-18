@@ -52,9 +52,6 @@ export default {
             this.game.completeRound();
           }
         }
-        else {
-          console.log('completed');
-        }
       }
     }
   },
@@ -67,6 +64,8 @@ export default {
       if (!this.game.completed) {
         const shape = this.game.shape;
         shape.rotate(shape.speed);
+      } else {
+        router.push('end');
       }
     }
   }
