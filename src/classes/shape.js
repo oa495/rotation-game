@@ -1,5 +1,4 @@
-class Shape {
-
+export default class Shape {
   _instance;
   _speed;
   active = false;

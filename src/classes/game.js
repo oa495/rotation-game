@@ -1,5 +1,11 @@
-class Game {
-  complete = false;
+import Shape from './shape';
+
+export default class Game {
+  completed = false;
+
+  // If game is ended or completed it becomes not activee
+  active = false;
+
   shape;
   completedShapes = [];
   speed;
@@ -18,13 +24,15 @@ class Game {
   constructor(length) {
     this.length = length;
     this.shape = this.createShape();
+    this.active = true;
   }
 
   completeRound() {
     this.shape.setStatus(false);
     this.completedShapes.push(this.shape);
     if (this.completedShapes.length === this.length) {
-      this.complete = true;
+      this.completed = true;
+      this.active = false;
 
     } else {
       setTimeout(() => {
@@ -62,7 +70,7 @@ class Game {
   }
 
   createShape() {
-    let speed = Math.floor(random(1,12));
+    let speed = Math.floor(this.random(1,12));
     const sides = this.getSides();
     this.speed = speed;
     this.shape = new Shape(view.center, sides, 100, speed);
@@ -72,14 +80,14 @@ class Game {
   }
 
   getSides() {
-    let sides = Math.floor(random(3, 8));
+    let sides = Math.floor(this.random(3, 8));
     if (this.completedShapes.length === 0) return sides;
     let pastShapeIsTheSame = this.completedShapes.some(shape => {
       return shape.sides === sides;
     });
 
     while (pastShapeIsTheSame) {
-      sides = Math.floor(random(3, 8));
+      sides = Math.floor(this.random(3, 8));
       pastShapeIsTheSame = this.completedShapes.some(shape => {
         return shape.sides === sides;
       });
@@ -89,5 +97,10 @@ class Game {
 
   currentShape() {
     return this.shapes(this.currentIndex);
+  }
+
+  random(min, max) {
+    // min and max included
+    return Math.random() * (max - min) + min;
   }
 }
